@@ -1,0 +1,52 @@
+#include <iostream>
+#include <vector>
+#include <list>
+#include <algorithm> // for std::find
+
+using namespace std;
+
+class hashing {
+public:
+    vector<list<int>> hashtable;
+    int buckets;
+
+    hashing(int size) {
+        buckets = size;
+        hashtable.resize(size);
+    }
+
+    int hashvalue(int key) {
+        return key % buckets; // division method
+    }
+
+    void addkey(int key) {
+        int idx = hashvalue(key);
+        hashtable[idx].push_back(key);
+    }
+
+    list<int>::iterator searchkey(int key) {
+        int idx = hashvalue(key);
+        return find(hashtable[idx].begin(), hashtable[idx].end(), key);
+    }
+
+    void removekey(int key) {
+        int idx = hashvalue(key);
+        auto it = searchkey(key);
+        if (it != hashtable[idx].end()) {
+            hashtable[idx].erase(it);
+            cout << key << " is deleted" << " ";
+        } else {
+            cout << "Key is not present in the table" << " ";
+        }
+    }
+};
+
+int main() {
+    hashing h(10);
+    h.addkey(2);
+    h.addkey(8);
+    h.addkey(4);
+    h.removekey(2);
+    h.removekey(2);
+    return 0;
+}
